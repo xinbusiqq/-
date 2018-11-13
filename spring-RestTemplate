@@ -1,0 +1,15 @@
+
+
+    RestTemplate是Spring提供的用于访问Rest服务的客户端，在Java后台请求rest服务，类似的还有JDK原生的URLConnection、Apache的Http Client、Netty的异步HTTP Client；
+
+    RestTemplate提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率。
+
+    调用RestTemplate的默认构造函数，RestTemplate对象在底层通过使用java.net包下的实现创建HTTP 请求，
+
+    可以通过使用ClientHttpRequestFactory指定不同的HTTP请求方式。
+
+    ClientHttpRequestFactory接口主要提供了两种实现方式
+
+    1、一种是SimpleClientHttpRequestFactory，使用J2SE提供的方式（既java.net包提供的方式）创建底层的Http请求连接。
+
+    2、一种方式是使用HttpComponentsClientHttpRequestFactory方式，底层使用HttpClient访问远程的Http服务，使用HttpClient可以配置连接池和证书等信息。
