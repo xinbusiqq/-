@@ -1,0 +1,20 @@
+        List<ProductModel> productModelList = new ArrayList<>();
+        ProductModel productModel1 = new ProductModel();
+        ProductModel productModel2 = new ProductModel();
+        productModel1.setId(1L);
+        productModel2.setId(2L);
+        productModelList.add(productModel1);
+        productModelList.add(productModel2);
+
+        List<ProductModel> productModelList2 = new ArrayList<>(productModelList);
+//        int a = 1;
+//        productModelList2.remove(a);
+        productModelList2.get(0).setId(3L);
+        System.out.println(productModelList.size());
+        System.out.println(FastJsonUtil.bean2Json(productModelList));
+
+        System.out.println(productModelList2.size());
+        System.out.println(FastJsonUtil.bean2Json(productModelList2));
+        
+对一个新list做remove操作，不会影响原list；
+对一个新list中元素修改属性，会影响原list；
