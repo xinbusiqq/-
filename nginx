@@ -1,0 +1,19 @@
+mac 配置文件路径 /usr/local/etc/nginx/nginx.conf；
+本地配置跨域不要使用localhost，要使用与远程服务相同的域名；
+server {
+    listen       80;
+    server_name  hql.jd.id;
+    location / {
+        add_header Access-Control-Allow-Origin *;
+        proxy_pass http://hql.jd.id:8090;
+    }
+    location /api/ {
+        include  uwsgi_params;
+        proxy_redirect off;
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Headers X-Requested-With;
+        add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+        proxy_pass http://seller.jd.id;
+
+    }
+}
