@@ -1,2 +1,2 @@
 文件会编译到classpath下，文件名不能使用中文，否则会编码，编码后不匹配
-ClassPathFileUtil.class.getResource("/withdrawal/test.xlsx").getPath()
+Thread.currentThread().getContextClassLoader().getResource("/withdrawal/template/withdrawalNotice.xlsx").getPath()
