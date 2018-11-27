@@ -1,6 +1,6 @@
 环境mac、windows
 IDE：idea
-现象：
+现象：properties文件无法获取值
 aaa=b@gmail.com
 odms_jss_bucket=${odms.jss.bucket}
 从pom文件中获取value时，假如前面属性有“一个”@符，则无法正确获取odms.jss.bucket；
