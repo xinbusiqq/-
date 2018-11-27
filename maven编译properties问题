@@ -1,0 +1,8 @@
+环境mac、windows
+IDE：idea
+现象：
+aaa=b@gmail.com
+odms_jss_bucket=${odms.jss.bucket}
+从pom文件中获取value时，假如前面属性有“一个”@符，则无法正确获取odms.jss.bucket；
+假如有第二个@符(任意位置)，则可以正常获取odms.jss.bucket的值；
+或者aaa=b@gmail.com在odms_jss_bucket=${odms.jss.bucket}之后；
