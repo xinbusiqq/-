@@ -1,5 +1,6 @@
 环境mac、windows
 IDE：idea
+maven编译至target
 现象：properties文件无法获取值
 aaa=b@gmail.com
 odms_jss_bucket=${odms.jss.bucket}
