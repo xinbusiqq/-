@@ -1,0 +1,21 @@
+安装elasticsearch：
+1、安装JDK，1.8
+2、安装elasticsearch：brew install elasticsearch
+/usr/local/Cellar/elasticsearch/6.5.2
+3、运行：./bin/elasticsearch
+4、访问：curl 'http://localhost:9200/?pretty'
+	或者使用浏览器访问
+5、安装kibana（可视化平台）
+https://www.elastic.co/downloads/kibana
+安装后解压到/usr/local/kibana-6.5.4-darwin-x86_64
+6、安装sense(5.x之后不需要再安装sense)
+7、启动./bin/kibana
+访问http://localhost:5601，可以在菜单dev_tools操作
+8、指定分析器，分词
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": "Trockclimbing"
+}
+
+9、查询所有索引：curl -XGET 192.168.47.237:9200/_cat/indices
