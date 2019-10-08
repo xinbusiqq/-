@@ -1,0 +1,19 @@
+@FeignClient(value = "MOBILE",fallback = MobileServiceImpl.class)
+public interface MobileService {
+
+    @RequestMapping(value = "/api/mobile", method= RequestMethod.GET)
+    public MobileModel mobile(@RequestParam("phone") String phone);
+
+    @RequestMapping(value = "/api/mobile/list", method= RequestMethod.POST)
+    JSONObject mobileBatch(@RequestParam("phones") String phones);
+}
+
+-----------
+
+@FeignClient(value = "OUTBOUND",fallback = OutBoundRoutingServiceImpl.class)
+public interface OutboundRoutingService {
+
+    @RequestMapping(value = "/search/{vccId}/{projId}/outbound", method= RequestMethod.POST)
+    public RpcResponse outboundNum(@PathVariable("vccId") Long vccId, @PathVariable("projId") Long prodId, @RequestBody OutboundParam outboundParam);
+
+}
