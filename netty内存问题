@@ -1,0 +1,51 @@
+现象：项目运行一段时间后，内存无法回收；
+本地测试：使用netty客户端连接本机服务端，服务端设置512M内存；
+运行一段时间后，通过VisualVM观察，io.netty.buffer.PoolSubpage实例数较多，但是没有出现内存溢出，通过调用其他rest接口，直接触发netty内存错误；
+io.netty.util.internal.OutOfDirectMemoryError: failed to allocate 16777216 byte(s) of direct memory (used: 520093975, max: 536870912)
+	at io.netty.util.internal.PlatformDependent.incrementMemoryCounter(PlatformDependent.java:742) ~[netty-common-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.util.internal.PlatformDependent.allocateDirectNoCleaner(PlatformDependent.java:697) ~[netty-common-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.PoolArena$DirectArena.allocateDirect(PoolArena.java:758) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.PoolArena$DirectArena.newChunk(PoolArena.java:734) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.PoolArena.allocateNormal(PoolArena.java:245) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.PoolArena.allocate(PoolArena.java:215) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.PoolArena.allocate(PoolArena.java:147) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.PooledByteBufAllocator.newDirectBuffer(PooledByteBufAllocator.java:356) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.AbstractByteBufAllocator.directBuffer(AbstractByteBufAllocator.java:187) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.AbstractByteBufAllocator.buffer(AbstractByteBufAllocator.java:123) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.buffer.AbstractByteBuf.readBytes(AbstractByteBuf.java:872) ~[netty-buffer-4.1.48.Final.jar:4.1.48.Final]
+	at com.icos.icossense.adaptor.handler.NettyDecoder.decode(NettyDecoder.java:16) ~[icossense-xkptadaptor-1.0-SNAPSHOT.jar:?]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:498) ~[netty-codec-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:437) ~[netty-codec-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:276) ~[netty-codec-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:321) [netty-codec-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:295) [netty-codec-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:714) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493) [netty-transport-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989) [netty-common-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-common-4.1.48.Final.jar:4.1.48.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-common-4.1.48.Final.jar:4.1.48.Final]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
+  
+  解决办法：在最后一个handler关闭ByteBuf；
+  DefaultServerHandler extends ChannelInboundHandlerAdapter
+  @Override
+  public void channelRead(ChannelHandlerContext ctx, Object msg) {
+      ByteBuf inBuffer = (ByteBuf) msg;
+      }finally {
+          inBuffer.release();
+//            ReferenceCountUtil.release(msg);
+      }
+  }
