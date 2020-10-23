@@ -1,0 +1,28 @@
+public static BlockingQueue<byte[]> bq;
+public static ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+public static TCPConsumer tcpConsumer = new TCPConsumer();
+
+bq = new ArrayBlockingQueue<>(queueSize);
+singleThreadExecutor.execute(tcpConsumer);
+singleThreadExecutor.shutdown();
+
+public class TCPConsumer implements Runnable {
+    private final static Logger logger = LoggerFactory.getLogger(TCPConsumer.class);
+
+    @Override
+    public void run() {
+        while (true){
+            try {
+                byte[] arr = XKPTEndpoint.bq.poll(10, TimeUnit.SECONDS);
+                if (arr != null){
+                    
+                }else {
+                    logger.warn("TCP queue is null!");
+                }
+            }catch (Exception e){
+                logger.error("TCPConsumer error !", e);
+            }
+        }
+
+    }
+}
