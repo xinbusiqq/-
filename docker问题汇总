@@ -5,3 +5,5 @@
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
 解决方案：不要使用localhost或者127.0.0.1，使用内网的ip，就解决了.
 - SPRING_DATASOURCE_URL=jdbc:mysql://172.17.0.4:3306/davinci0.3?useUnicode=true&characterEncoding=UTF
+
+3、无法访问docker内部image，检查docker-compose端口映射（ports），使用docker ps查看端口
