@@ -1,1 +1,7 @@
 1、docker配置mysql镜像，如果数据文件放在本地，则每次修改完配置后，需要删除数据文件，重新启动；
+
+2、com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+解决方案：不要使用localhost或者127.0.0.1，使用内网的ip，就解决了.
+- SPRING_DATASOURCE_URL=jdbc:mysql://172.17.0.4:3306/davinci0.3?useUnicode=true&characterEncoding=UTF
