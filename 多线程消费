@@ -1,0 +1,32 @@
+public static BlockingQueue<String> bqs = new ArrayBlockingQueue<>(1000);
+BlockingQueue<Runnable> bqueue = new ArrayBlockingQueue<Runnable>(20);
+//创建线程池，池中保存的线程数为3，允许的最大线程数为5
+ThreadPoolExecutor pool = new ThreadPoolExecutor(3,5,50, TimeUnit.MILLISECONDS,bqueue);
+
+
+init方法：
+for (int i=0;i<4;i++){
+	Runnable r = new MyThread();
+	pool.execute(r);
+}
+pool.shutdown();
+
+放入队列
+bqs.offer("push,"+System.currentTimeMillis());
+
+
+消费线程：
+class MyThread implements Runnable{
+    private final static Logger logger = LoggerFactory.getLogger(MyThread.class);
+    @Override
+    public void run(){
+        try{
+            while (true){
+                logger.info(Thread.currentThread().getName() + ":" + XKPTEndpoint.bqs.poll(10, TimeUnit.SECONDS));
+                Thread.sleep(100);
+            }
+        }catch(InterruptedException e){
+            logger.error("er",e);
+        }
+    }
+}
